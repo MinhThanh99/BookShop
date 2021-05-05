@@ -2,6 +2,7 @@ package com.minhthanh.bookshop;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
 import android.graphics.Typeface;
@@ -97,23 +98,11 @@ public class MainActivity extends AppCompatActivity {
         binding.bottomNavigation.show(ID_NOTIFICATION,true);
 
 
-        //slider
 
-        imageAdapter = new ImageAdapter(this, getListImage());
-        binding.viewpager.setAdapter(imageAdapter);
-
-        binding.circleindicator.setViewPager(binding.viewpager);
-        imageAdapter.registerDataSetObserver(binding.circleindicator.getDataSetObserver());
     }
 
-    private List<Image> getListImage(){
-        List<Image> imageList = new ArrayList<>();
-        imageList.add(new Image(R.drawable.heaven));
-        imageList.add(new Image(R.drawable.heaven));
-        imageList.add(new Image(R.drawable.heaven));
-        imageList.add(new Image(R.drawable.heaven));
-        imageList.add(new Image(R.drawable.heaven));
-
-        return imageList;
+    private void getFragment(Fragment fragment){
+        getSupportFragmentManager().beginTransaction().replace(R.id.conta)
     }
+
 }
