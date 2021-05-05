@@ -2,6 +2,7 @@ package com.minhthanh.bookshop;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
+import androidx.viewpager.widget.ViewPager;
 
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -10,6 +11,13 @@ import android.widget.Toast;
 
 import com.etebarian.meowbottomnavigation.MeowBottomNavigation;
 import com.minhthanh.bookshop.databinding.ActivityMainBinding;
+import com.minhthanh.bookshop.img_slider.Image;
+import com.minhthanh.bookshop.img_slider.ImageAdapter;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import me.relex.circleindicator.CircleIndicator;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -19,6 +27,9 @@ public class MainActivity extends AppCompatActivity {
     private final static int ID_MESSAGE = 3;
     private final static int ID_NOTIFICATION = 4;
     private final static int ID_ACCOUNT = 5;
+
+
+    private ImageAdapter imageAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,5 +95,25 @@ public class MainActivity extends AppCompatActivity {
         binding.bottomNavigation.setCount(ID_NOTIFICATION, "115");
 
         binding.bottomNavigation.show(ID_NOTIFICATION,true);
+
+
+        //slider
+
+        imageAdapter = new ImageAdapter(this, getListImage());
+        binding.viewpager.setAdapter(imageAdapter);
+
+        binding.circleindicator.setViewPager(binding.viewpager);
+        imageAdapter.registerDataSetObserver(binding.circleindicator.getDataSetObserver());
+    }
+
+    private List<Image> getListImage(){
+        List<Image> imageList = new ArrayList<>();
+        imageList.add(new Image(R.drawable.heaven));
+        imageList.add(new Image(R.drawable.heaven));
+        imageList.add(new Image(R.drawable.heaven));
+        imageList.add(new Image(R.drawable.heaven));
+        imageList.add(new Image(R.drawable.heaven));
+
+        return imageList;
     }
 }
