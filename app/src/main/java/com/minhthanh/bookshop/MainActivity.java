@@ -54,6 +54,30 @@ public class MainActivity extends AppCompatActivity {
         binding.bottomNavigation.setOnClickMenuListener(new MeowBottomNavigation.ClickListener() {
             @Override
             public void onClickItem(MeowBottomNavigation.Model item) {
+                switch (item.getId()) {
+                    case ID_HOME:
+
+                        getFragment(HomeFragment.newInstance());
+                        break;
+                    case ID_EXPLORE:
+                        getFragment(AccountFragment.newInstance());
+
+                        break;
+                    case ID_MESSAGE:
+                        getFragment(CartFragment.newInstance());
+
+                        break;
+                    case ID_NOTIFICATION:
+                        getFragment(Fragment4.newInstance());
+
+                        break;
+                    case ID_ACCOUNT:
+                        getFragment(Fragment5.newInstance());
+
+                        break;
+                    default:
+                        break;
+                }
                 Toast.makeText(MainActivity.this, "clicked item : " + item.getId(), Toast.LENGTH_SHORT).show();
             }
         });
@@ -61,33 +85,13 @@ public class MainActivity extends AppCompatActivity {
         binding.bottomNavigation.setOnShowListener(new MeowBottomNavigation.ShowListener() {
             @Override
             public void onShowItem(MeowBottomNavigation.Model item) {
-                switch (item.getId()) {
-                    case ID_HOME:
 
-                        getFragment(HomeFragment.newInstance());
-                        break;
-                    case ID_EXPLORE:
-
-                        break;
-                    case ID_MESSAGE:
-
-                        break;
-                    case ID_NOTIFICATION:
-
-                        break;
-                    case ID_ACCOUNT:
-
-                        break;
-                    default:
-                        break;
-                }
                 Toast.makeText(MainActivity.this, "showing item : " + item.getId(), Toast.LENGTH_SHORT).show();
 
                 String name;
                 switch (item.getId()) {
                     case ID_HOME:
                         name = "HOME";
-                        getFragment(HomeFragment.newInstance());
                         break;
                     case ID_EXPLORE:
                         name = "EXPLORE";

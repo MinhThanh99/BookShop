@@ -8,7 +8,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Account"
+            android:text="fragment 4"
             android:gravity="center"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
