@@ -17,6 +17,10 @@
             android:orientation="horizontal"/>
 
 
+        <FrameLayout
+            android:id="@+id/container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -52,6 +56,9 @@
             app:mbn_rippleColor="#2f424242"
             app:mbn_selectedIconColor="#3c415e"
             app:mbn_shadowColor="#1f212121" />
+
+
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

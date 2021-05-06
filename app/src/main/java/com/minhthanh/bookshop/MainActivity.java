@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.etebarian.meowbottomnavigation.MeowBottomNavigation;
 import com.minhthanh.bookshop.databinding.ActivityMainBinding;
+import com.minhthanh.bookshop.home.HomeFragment;
 import com.minhthanh.bookshop.img_slider.Image;
 import com.minhthanh.bookshop.img_slider.ImageAdapter;
 
@@ -60,12 +61,33 @@ public class MainActivity extends AppCompatActivity {
         binding.bottomNavigation.setOnShowListener(new MeowBottomNavigation.ShowListener() {
             @Override
             public void onShowItem(MeowBottomNavigation.Model item) {
+                switch (item.getId()) {
+                    case ID_HOME:
+
+                        getFragment(HomeFragment.newInstance());
+                        break;
+                    case ID_EXPLORE:
+
+                        break;
+                    case ID_MESSAGE:
+
+                        break;
+                    case ID_NOTIFICATION:
+
+                        break;
+                    case ID_ACCOUNT:
+
+                        break;
+                    default:
+                        break;
+                }
                 Toast.makeText(MainActivity.this, "showing item : " + item.getId(), Toast.LENGTH_SHORT).show();
 
                 String name;
                 switch (item.getId()) {
                     case ID_HOME:
                         name = "HOME";
+                        getFragment(HomeFragment.newInstance());
                         break;
                     case ID_EXPLORE:
                         name = "EXPLORE";
@@ -93,16 +115,18 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
         binding.bottomNavigation.setCount(ID_NOTIFICATION, "115");
 
         binding.bottomNavigation.show(ID_NOTIFICATION,true);
 
 
 
+
     }
 
     private void getFragment(Fragment fragment){
-        getSupportFragmentManager().beginTransaction().replace(R.id.conta)
+        getSupportFragmentManager().beginTransaction().replace(R.id.container,fragment).commit();
     }
 
 }
