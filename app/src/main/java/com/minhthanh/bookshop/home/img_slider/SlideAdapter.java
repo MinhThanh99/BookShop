@@ -1,4 +1,4 @@
-package com.minhthanh.bookshop.img_slider;
+package com.minhthanh.bookshop.home.img_slider;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -15,15 +15,15 @@ import com.minhthanh.bookshop.databinding.ItemSliderBinding;
 
 import java.util.List;
 
-public class ImageAdapter extends PagerAdapter {
+public class SlideAdapter extends PagerAdapter {
 
     ItemSliderBinding binding;
     Context context;
-    List<Image> imageList;
+    List<Slide> slideList;
 
-    public ImageAdapter(Context context, List<Image> imageList) {
+    public SlideAdapter(Context context, List<Slide> slideList) {
         this.context = context;
-        this.imageList = imageList;
+        this.slideList = slideList;
     }
 
     @NonNull
@@ -32,9 +32,9 @@ public class ImageAdapter extends PagerAdapter {
         View view = LayoutInflater.from(container.getContext()).inflate(R.layout.item_slider,container,false);
 
         ImageView img = view.findViewById(R.id.img_slider);
-        Image image = imageList.get(position);
-        if(image != null){
-            Glide.with(context).load(image.getResourceID()).into(img);
+        Slide slide = slideList.get(position);
+        if(slide != null){
+            Glide.with(context).load(slide.getThumb()).into(img);
         }
 
         //add view to viewgroup
@@ -44,8 +44,8 @@ public class ImageAdapter extends PagerAdapter {
 
     @Override
     public int getCount() {
-        if(imageList != null)
-            return imageList.size();
+        if(slideList != null)
+            return slideList.size();
         return 0;
     }
 

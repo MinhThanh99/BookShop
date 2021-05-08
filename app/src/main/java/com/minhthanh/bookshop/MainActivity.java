@@ -3,23 +3,15 @@ package com.minhthanh.bookshop;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
-import androidx.viewpager.widget.ViewPager;
 
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.etebarian.meowbottomnavigation.MeowBottomNavigation;
 import com.minhthanh.bookshop.databinding.ActivityMainBinding;
 import com.minhthanh.bookshop.home.HomeFragment;
-import com.minhthanh.bookshop.img_slider.Image;
-import com.minhthanh.bookshop.img_slider.ImageAdapter;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import me.relex.circleindicator.CircleIndicator;
+import com.minhthanh.bookshop.home.img_slider.SlideAdapter;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -31,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
     private final static int ID_ACCOUNT = 5;
 
 
-    private ImageAdapter imageAdapter;
+    private SlideAdapter slideAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
