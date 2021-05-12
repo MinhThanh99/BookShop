@@ -33,7 +33,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.logging.Logger;
 
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements IHome {
 
     String linkSlide = "http://demo8468432.mockable.io/GetSlider";
     Slide slide;
@@ -42,6 +42,7 @@ public class HomeFragment extends Fragment {
 
     FragmentHomeBinding binding;
     private SlideAdapter slideAdapter;
+    HomePresenter homePresenter;
 
     public static HomeFragment newInstance() {
 
@@ -57,30 +58,25 @@ public class HomeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home,container,false);
 
-//        //TRUYỀN VÀO viewpager
-//        imageAdapter = new ImageAdapter(getContext(), getListImage());
-//        binding.viewpager.setAdapter(imageAdapter);
-//
-//        //truyền dl cỉclecandicator
-//        binding.circleindicator.setViewPager(binding.viewpager);
-//        imageAdapter.registerDataSetObserver(binding.circleindicator.getDataSetObserver());
-
         new GetSlide().execute();
-
 
         return binding.getRoot();
     }
 
-    private List<Slide> getListImage(){
-        List<Slide> slideList = new ArrayList<>();
-        slideList.add(new Slide(-1,"https://cdn0.fahasa.com/media/magentothem/banner7/Resize_920x420.jpg",null));
-        slideList.add(new Slide(-1,"https://cdn0.fahasa.com/media/magentothem/banner7/920_x_420.jpg",null));
-        slideList.add(new Slide(-1,"https://cdn0.fahasa.com/media/magentothem/banner7/zalopay0521.png",null));
-        slideList.add(new Slide(-1,"https://cdn0.fahasa.com/media/magentothem/banner7/VNPAY1_920x420.png",null));
-        slideList.add(new Slide(-1,"https://cdn0.fahasa.com/media/magentothem/banner7/airpay_920_x_420_2.jpg",null));
 
-        return slideList;
+    @Override
+    public void onShowSlide(List<Slide> slideList) {
+        //TRUYỀN VÀO viewpager
+        slideAdapter = new SlideAdapter(getContext(), slideList);
+        binding.viewpager.setAdapter(slideAdapter);
+
+        //truyền dl cỉclecandicator
+        binding.circleindicator.setViewPager(binding.viewpager);
+        slideAdapter.registerDataSetObserver(binding.circleindicator.getDataSetObserver());
+
+        autoSlideImage();
     }
+
 
     //lấy ds slide
     class GetSlide extends AsyncTask<Void,Void,String>{
@@ -121,38 +117,23 @@ public class HomeFragment extends Fragment {
             super.onPostExecute(s);
 
             slideList2 = getJSONSlideArray(s);
-//            slideList2 = new ArrayList<>();
-//            try {
-//                JSONArray jsonArray = new JSONArray(s);
-//                for(int i =0; i< jsonArray.length(); i++){
-//                    JSONObject jsonObject = jsonArray.getJSONObject(i);
+
+            onShowSlide(slideList2);
+
+//            //TRUYỀN VÀO viewpager
+//            slideAdapter = new SlideAdapter(getContext(), slideList2);
+//            binding.viewpager.setAdapter(slideAdapter);
 //
-//                    int resourceID = jsonObject.getInt("resourceID");
-//                    String thumb = jsonObject.getString("thumb");
-//                    String toLink = jsonObject.getString("toLink");
+//            //truyền dl cỉclecandicator
+//            binding.circleindicator.setViewPager(binding.viewpager);
+//            slideAdapter.registerDataSetObserver(binding.circleindicator.getDataSetObserver());
 //
-//                    slide = new Slide(resourceID,thumb,toLink);
-//                    slideList2.add(slide);
-//                }
-//            } catch (JSONException e) {
-//                e.printStackTrace();
-//            }
-
-            //TRUYỀN VÀO viewpager
-            slideAdapter = new SlideAdapter(getContext(), slideList2);
-            binding.viewpager.setAdapter(slideAdapter);
-
-            //truyền dl cỉclecandicator
-            binding.circleindicator.setViewPager(binding.viewpager);
-            slideAdapter.registerDataSetObserver(binding.circleindicator.getDataSetObserver());
-
-            autoSlideImage();
+//            autoSlideImage();
         }
     }
 
     public List<Slide> getJSONSlideArray(String s){
 
-        String result = "";
         slideList = new ArrayList<>();
         try {
             JSONArray jsonArray = new JSONArray(s);
@@ -200,7 +181,7 @@ public class HomeFragment extends Fragment {
                     }
                 });
             }
-        }, 500,3000);//set time
+        }, 500,2000);//set time
     }
 
 
