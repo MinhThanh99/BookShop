@@ -2,6 +2,8 @@ package com.minhthanh.bookshop.home;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,12 +29,16 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.logging.Logger;
 
 public class HomeFragment extends Fragment {
 
     String linkSlide = "http://demo8468432.mockable.io/GetSlider";
     Slide slide;
     List<Slide> slideList;
+    private Timer timer;
 
     FragmentHomeBinding binding;
     private SlideAdapter slideAdapter;
@@ -60,6 +66,8 @@ public class HomeFragment extends Fragment {
 //        imageAdapter.registerDataSetObserver(binding.circleindicator.getDataSetObserver());
 
         new GetSlide().execute();
+
+
         return binding.getRoot();
     }
 
@@ -112,7 +120,23 @@ public class HomeFragment extends Fragment {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
 
-            slideList2 = getJSONSlideArray(linkSlide);
+            slideList2 = getJSONSlideArray(s);
+//            slideList2 = new ArrayList<>();
+//            try {
+//                JSONArray jsonArray = new JSONArray(s);
+//                for(int i =0; i< jsonArray.length(); i++){
+//                    JSONObject jsonObject = jsonArray.getJSONObject(i);
+//
+//                    int resourceID = jsonObject.getInt("resourceID");
+//                    String thumb = jsonObject.getString("thumb");
+//                    String toLink = jsonObject.getString("toLink");
+//
+//                    slide = new Slide(resourceID,thumb,toLink);
+//                    slideList2.add(slide);
+//                }
+//            } catch (JSONException e) {
+//                e.printStackTrace();
+//            }
 
             //TRUYỀN VÀO viewpager
             slideAdapter = new SlideAdapter(getContext(), slideList2);
@@ -121,15 +145,17 @@ public class HomeFragment extends Fragment {
             //truyền dl cỉclecandicator
             binding.circleindicator.setViewPager(binding.viewpager);
             slideAdapter.registerDataSetObserver(binding.circleindicator.getDataSetObserver());
+
+            autoSlideImage();
         }
     }
 
-    public List<Slide> getJSONSlideArray(String linkSlide){
+    public List<Slide> getJSONSlideArray(String s){
 
         String result = "";
         slideList = new ArrayList<>();
         try {
-            JSONArray jsonArray = new JSONArray(linkSlide);
+            JSONArray jsonArray = new JSONArray(s);
             for(int i =0; i< jsonArray.length(); i++){
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
 
@@ -146,5 +172,44 @@ public class HomeFragment extends Fragment {
 
         return slideList;
 
+    }
+
+    private  void  autoSlideImage(){
+        if( slideList == null || slideList.isEmpty() || binding.viewpager == null)
+            return;
+
+        //init timer
+        if(timer == null){
+            timer = new Timer();
+        }
+
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                    @Override
+                    public void run() {
+                        int currentItem = binding.viewpager.getCurrentItem();
+                        int totalItem = slideList.size() -1;
+                        if( currentItem< totalItem){
+                            currentItem ++;
+                            binding.viewpager.setCurrentItem(currentItem);
+                        }else {
+                            binding.viewpager.setCurrentItem(0);
+                        }
+                    }
+                });
+            }
+        }, 500,3000);//set time
+    }
+
+
+    //neu activity k tồn tại thì cancel
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if(timer != null)
+            timer.cancel();
+        timer = null;
     }
 }

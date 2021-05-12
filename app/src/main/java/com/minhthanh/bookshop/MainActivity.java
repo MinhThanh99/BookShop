@@ -41,8 +41,6 @@ public class MainActivity extends AppCompatActivity {
         binding.bottomNavigation.add(new MeowBottomNavigation.Model(ID_NOTIFICATION, R.drawable.ic_notification));
         binding.bottomNavigation.add(new MeowBottomNavigation.Model(ID_ACCOUNT, R.drawable.ic_account));
 
-        binding.bottomNavigation.setCount(ID_NOTIFICATION, "115");
-
         binding.bottomNavigation.setOnClickMenuListener(new MeowBottomNavigation.ClickListener() {
             @Override
             public void onClickItem(MeowBottomNavigation.Model item) {
@@ -112,9 +110,11 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-        binding.bottomNavigation.setCount(ID_NOTIFICATION, "115");
+        //Đếm thông báo
+        binding.bottomNavigation.setCount(ID_NOTIFICATION, "0");
 
-        binding.bottomNavigation.show(ID_NOTIFICATION,true);
+        //Hiển thị đầu tiên
+        binding.bottomNavigation.show(ID_HOME,true);
 
 
 
