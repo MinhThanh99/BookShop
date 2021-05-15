@@ -9,19 +9,32 @@ import android.os.Bundle;
 import android.widget.Toast;
 
 import com.etebarian.meowbottomnavigation.MeowBottomNavigation;
+import com.minhthanh.bookshop.api.GetBookApi;
 import com.minhthanh.bookshop.databinding.ActivityMainBinding;
 import com.minhthanh.bookshop.home.HomeFragment;
 import com.minhthanh.bookshop.home.img_slider.SlideAdapter;
+
+import java.util.ArrayList;
+
+import model.Book;
+import model.Category;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
 
     ActivityMainBinding binding;
     private final static int ID_HOME = 1;
-    private final static int ID_EXPLORE = 2;
-    private final static int ID_MESSAGE = 3;
-    private final static int ID_NOTIFICATION = 4;
-    private final static int ID_ACCOUNT = 5;
+    private final static int ID_MESSAGE = 2;
+    private final static int ID_NOTIFICATION = 3;
+    private final static int ID_ACCOUNT = 4;
+    private final static int ID_CART = 5;
 
+//
+    ArrayList<Book> bookList;
 
     private SlideAdapter slideAdapter;
 
@@ -33,13 +46,14 @@ public class MainActivity extends AppCompatActivity {
         //final TextView tvSelected = findViewById(R.id.tv_selected);
         binding.tvSelected.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/SourceSansPro-Regular.ttf"));
 
+
         //MeowBottomNavigation bottomNavigation = findViewById(R.id.bottomNavigation);
 
         binding.bottomNavigation.add(new MeowBottomNavigation.Model(ID_HOME, R.drawable.ic_home));
-        binding.bottomNavigation.add(new MeowBottomNavigation.Model(ID_EXPLORE, R.drawable.ic_explore));
         binding.bottomNavigation.add(new MeowBottomNavigation.Model(ID_MESSAGE, R.drawable.ic_message));
         binding.bottomNavigation.add(new MeowBottomNavigation.Model(ID_NOTIFICATION, R.drawable.ic_notification));
         binding.bottomNavigation.add(new MeowBottomNavigation.Model(ID_ACCOUNT, R.drawable.ic_account));
+        binding.bottomNavigation.add(new MeowBottomNavigation.Model(ID_CART, R.drawable.ic_outline_shopping_cart_24));
 
         binding.bottomNavigation.setOnClickMenuListener(new MeowBottomNavigation.ClickListener() {
             @Override
@@ -49,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
 
                         getFragment(HomeFragment.newInstance());
                         break;
-                    case ID_EXPLORE:
+                    case ID_CART:
                         getFragment(AccountFragment.newInstance());
 
                         break;
@@ -81,9 +95,10 @@ public class MainActivity extends AppCompatActivity {
                 String name;
                 switch (item.getId()) {
                     case ID_HOME:
+                        getFragment(HomeFragment.newInstance());
                         name = "HOME";
                         break;
-                    case ID_EXPLORE:
+                    case ID_CART:
                         name = "EXPLORE";
                         break;
                     case ID_MESSAGE:
@@ -98,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
                     default:
                         name = "";
                 }
-                binding.tvSelected.setText(getString(R.string.main_page_selected, name));
+
             }
         });
 
@@ -120,6 +135,8 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+
+
 
     private void getFragment(Fragment fragment){
         getSupportFragmentManager().beginTransaction().replace(R.id.container,fragment).commit();
