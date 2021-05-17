@@ -13,31 +13,19 @@
             android:id="@+id/gl1"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_constraintGuide_percent="0.25"
+            app:layout_constraintGuide_percent="0.9"
             android:orientation="horizontal"/>
 
 
         <FrameLayout
             android:id="@+id/container"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
-        <LinearLayout
-            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center"
-            android:orientation="vertical">
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/gl1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
 
-
-            <TextView
-                android:id="@+id/tv_selected"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:gravity="center"
-                android:textColor="#3c415e"
-                android:textSize="16sp" />
-
-        </LinearLayout>
 
         <com.etebarian.meowbottomnavigation.MeowBottomNavigation
             app:layout_constraintStart_toStartOf="parent"
@@ -56,9 +44,6 @@
             app:mbn_rippleColor="#2f424242"
             app:mbn_selectedIconColor="#3c415e"
             app:mbn_shadowColor="#1f212121" />
-
-
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

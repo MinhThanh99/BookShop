@@ -1,4 +1,4 @@
-package com.minhthanh.bookshop;
+package com.minhthanh.bookshop.fragment;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,17 +10,18 @@ import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
-import com.minhthanh.bookshop.databinding.FragmentCartBinding;
+import com.minhthanh.bookshop.R;
+import com.minhthanh.bookshop.databinding.Fragment4Binding;
 
-public class CartFragment extends Fragment {
+public class Fragment4 extends Fragment {
 
-    FragmentCartBinding binding;
+    Fragment4Binding binding;
 
-    public static CartFragment newInstance() {
+    public static Fragment4 newInstance() {
 
         Bundle args = new Bundle();
 
-        CartFragment fragment = new CartFragment();
+        Fragment4 fragment = new Fragment4();
         fragment.setArguments(args);
         return fragment;
     }
@@ -28,7 +29,7 @@ public class CartFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_cart,container, false);
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_4,container,false);
 
         return binding.getRoot();
     }

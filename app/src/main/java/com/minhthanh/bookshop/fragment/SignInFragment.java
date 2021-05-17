@@ -1,4 +1,4 @@
-package com.minhthanh.bookshop;
+package com.minhthanh.bookshop.fragment;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,16 +10,17 @@ import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
-import com.minhthanh.bookshop.databinding.Fragment5Binding;
+import com.minhthanh.bookshop.R;
+import com.minhthanh.bookshop.databinding.FragmentSignInBinding;
 
-public class Fragment5 extends Fragment {
-    Fragment5Binding binding;
+public class SignInFragment extends Fragment {
 
-    public static Fragment5 newInstance() {
+    FragmentSignInBinding binding;
+    public static SignInFragment newInstance() {
 
         Bundle args = new Bundle();
 
-        Fragment5 fragment = new Fragment5();
+        SignInFragment fragment = new SignInFragment();
         fragment.setArguments(args);
         return fragment;
     }
@@ -27,8 +28,7 @@ public class Fragment5 extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_5,container,false);
-
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_sign_in,container,false);
         return binding.getRoot();
     }
 }

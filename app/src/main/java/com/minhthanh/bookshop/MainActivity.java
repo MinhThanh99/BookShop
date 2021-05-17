@@ -6,23 +6,22 @@ import androidx.fragment.app.Fragment;
 
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.widget.Toast;
 
 import com.etebarian.meowbottomnavigation.MeowBottomNavigation;
-import com.minhthanh.bookshop.api.GetBookApi;
 import com.minhthanh.bookshop.databinding.ActivityMainBinding;
+import com.minhthanh.bookshop.fragment.AccountFragment;
+import com.minhthanh.bookshop.fragment.CartFragment;
+import com.minhthanh.bookshop.fragment.Fragment4;
+import com.minhthanh.bookshop.fragment.Fragment5;
 import com.minhthanh.bookshop.home.HomeFragment;
 import com.minhthanh.bookshop.home.img_slider.SlideAdapter;
 
 import java.util.ArrayList;
 
 import model.Book;
-import model.Category;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -33,10 +32,8 @@ public class MainActivity extends AppCompatActivity {
     private final static int ID_ACCOUNT = 4;
     private final static int ID_CART = 5;
 
-//
-    ArrayList<Book> bookList;
 
-    private SlideAdapter slideAdapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +41,8 @@ public class MainActivity extends AppCompatActivity {
         binding = DataBindingUtil.setContentView(this,R.layout.activity_main);
 
         //final TextView tvSelected = findViewById(R.id.tv_selected);
-        binding.tvSelected.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/SourceSansPro-Regular.ttf"));
+        //set font text
+        //binding.tvSelected.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/SourceSansPro-Regular.ttf"));
 
 
         //MeowBottomNavigation bottomNavigation = findViewById(R.id.bottomNavigation);
@@ -63,10 +61,7 @@ public class MainActivity extends AppCompatActivity {
 
                         getFragment(HomeFragment.newInstance());
                         break;
-                    case ID_CART:
-                        getFragment(AccountFragment.newInstance());
 
-                        break;
                     case ID_MESSAGE:
                         getFragment(CartFragment.newInstance());
 
@@ -76,6 +71,11 @@ public class MainActivity extends AppCompatActivity {
 
                         break;
                     case ID_ACCOUNT:
+                        getFragment(AccountFragment.newInstance());
+
+
+                        break;
+                    case ID_CART:
                         getFragment(Fragment5.newInstance());
 
                         break;
@@ -98,9 +98,6 @@ public class MainActivity extends AppCompatActivity {
                         getFragment(HomeFragment.newInstance());
                         name = "HOME";
                         break;
-                    case ID_CART:
-                        name = "EXPLORE";
-                        break;
                     case ID_MESSAGE:
                         name = "MESSAGE";
                         break;
@@ -108,7 +105,11 @@ public class MainActivity extends AppCompatActivity {
                         name = "NOTIFICATION";
                         break;
                     case ID_ACCOUNT:
+                        getFragment(AccountFragment.newInstance());
                         name = "ACCOUNT";
+                        break;
+                    case ID_CART:
+                        name = "EXPLORE";
                         break;
                     default:
                         name = "";
@@ -136,7 +137,11 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
 
+    }
 
     private void getFragment(Fragment fragment){
         getSupportFragmentManager().beginTransaction().replace(R.id.container,fragment).commit();

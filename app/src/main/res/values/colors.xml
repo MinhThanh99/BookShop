@@ -11,4 +11,8 @@
     <color name="colorPrimary">#18c0d4</color>
     <color name="colorPrimaryDark">#18c0d4</color>
     <color name="colorAccent">#D81B60</color>
+    <color name="lightBlue">#98ddca</color>
+
+    <color name="background">#ff7b54</color>
+    <color name="edit_text">#ffb26b</color>
 </resources>

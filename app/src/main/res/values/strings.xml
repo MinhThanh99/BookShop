@@ -6,4 +6,33 @@
     ------------Home-------------
     <string name="book">book</string>
     <string name="category">category</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+    ---------Account-----------
+    --------Sign in ----------
+    <string name="sign_in">Sign In</string>
+    <string name="email_phone">Email / Phone number</string>
+    <string name="enter_email_phone">Enter your Email / Phone number</string>
+    <string name="password">Password</string>
+    <string name="enter_password">Enter your Password</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="remember_me">Remember me</string>
+    <string name="login">LOGIN</string>
+    <string name="or">- OR -</string>
+    <string name="sign_in_with">Sign in with</string>
+    <string name="dont_have_an_account">Don\'t have an account?</string>
+    <string name="sign_up">Sign up</string>
+
+    ------------Sign up---------------
+    <string name="username">Username</string>
+    <string name="enter_username">Enter your Username</string>
+    <string name="phone">Phone No</string>
+    <string name="enter_phone">Enter your Phone no</string>
+    <string name="email">Email</string>
+    <string name="enter_email">Enter your Email</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="register">REGISTER</string>
+    <string name="have_an_acount">Have an account?</string>
 </resources>
