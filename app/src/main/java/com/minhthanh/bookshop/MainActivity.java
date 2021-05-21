@@ -4,10 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
-import android.graphics.Typeface;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.widget.Toast;
 
 import com.etebarian.meowbottomnavigation.MeowBottomNavigation;
@@ -16,12 +13,7 @@ import com.minhthanh.bookshop.fragment.AccountFragment;
 import com.minhthanh.bookshop.fragment.CartFragment;
 import com.minhthanh.bookshop.fragment.Fragment4;
 import com.minhthanh.bookshop.fragment.Fragment5;
-import com.minhthanh.bookshop.home.HomeFragment;
-import com.minhthanh.bookshop.home.img_slider.SlideAdapter;
-
-import java.util.ArrayList;
-
-import model.Book;
+import com.minhthanh.bookshop.fragment.HomeFragment;
 
 public class MainActivity extends AppCompatActivity {
 
