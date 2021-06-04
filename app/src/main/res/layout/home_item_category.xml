@@ -11,6 +11,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
             <TextView
+                android:layout_marginLeft="5dp"
                 android:id="@+id/tv_name_category"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

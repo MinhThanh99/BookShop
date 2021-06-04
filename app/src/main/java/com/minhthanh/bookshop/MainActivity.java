@@ -126,6 +126,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+        binding.getRoot();
 
     }
 

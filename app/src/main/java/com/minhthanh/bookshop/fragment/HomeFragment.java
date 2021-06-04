@@ -6,24 +6,28 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.transition.Transition;
 
+import com.minhthanh.bookshop.MainActivity;
 import com.minhthanh.bookshop.R;
 import com.minhthanh.bookshop.adapter.BookAdapter;
 import com.minhthanh.bookshop.adapter.CategoryAdapter;
 import com.minhthanh.bookshop.api.GetCategoryApi;
 import com.minhthanh.bookshop.databinding.FragmentHomeBinding;
+import com.minhthanh.bookshop.event.IonItemClickBook_home;
 import com.minhthanh.bookshop.home.IHome;
 import com.minhthanh.bookshop.home.img_slider.Slide;
 import com.minhthanh.bookshop.home.img_slider.SlideAdapter;
@@ -56,19 +60,20 @@ public class  HomeFragment extends Fragment implements IHome {
     String linkCategory = "http://demo8468432.mockable.io/GetCategory";
     Slide slide;
     List<Slide> slideList;
-
     private Timer timer;
+    private SlideAdapter slideAdapter;
 
     CategoryAdapter categoryAdapter;
     ArrayList<Category> categoryList;
+    ArrayList<Category> categoryData = new ArrayList<>();
     Category category;
     private Context context;
 
+    BookAdapter bookAdapter;
+    Book book;
+
     FragmentHomeBinding binding;
-    private SlideAdapter slideAdapter;
 
-
-    ArrayList<Category> categoryData = new ArrayList<>();
 
     public static HomeFragment newInstance() {
 
@@ -85,26 +90,17 @@ public class  HomeFragment extends Fragment implements IHome {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home,container,false);
 
         new GetSlide().execute();
-//        new GetCategory().execute();
 
 
         //recycleVIew
 
         getCategory();
-        for (int i = 0; i < categoryData.size(); i++) {
-                        categoryAdapter = new CategoryAdapter(context,categoryData);
 
-                        // below line is to set layout manager for our recycler view.
-                        LinearLayoutManager manager = new LinearLayoutManager(context,RecyclerView.VERTICAL,false);
-
-                        // setting layout manager for our recycler view.
-                        binding.crvCategory.setLayoutManager(manager);
-
-                        // below line is to set adapter to our recycler view.
-                        binding.crvCategory.setAdapter(categoryAdapter);
-                    }
 
         return binding.getRoot();
+    }
+    private void getFragment(Fragment fragment){
+        getFragmentManager().beginTransaction().replace(R.id.container,fragment).commit();
     }
 
     @Override
@@ -183,6 +179,19 @@ public class  HomeFragment extends Fragment implements IHome {
         this.context = context;
     }
 
+
+    //neu activity k tồn tại thì cancel
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if(timer != null)
+            timer.cancel();
+        timer = null;
+    }
+
+
+
+
     //lấy ds slide dùng AsynTask
     class GetSlide extends AsyncTask<Void,Void,String>{
 
@@ -225,19 +234,8 @@ public class  HomeFragment extends Fragment implements IHome {
 
             onShowSlide(slideList2);
 
-//            //TRUYỀN VÀO viewpager
-//            slideAdapter = new SlideAdapter(getContext(), slideList2);
-//            binding.viewpager.setAdapter(slideAdapter);
-//
-//            //truyền dl cỉclecandicator
-//            binding.circleindicator.setViewPager(binding.viewpager);
-//            slideAdapter.registerDataSetObserver(binding.circleindicator.getDataSetObserver());
-//
-//            autoSlideImage();
         }
     }
-
-
 
     public List<Slide> getJSONSlideArray(String s){
 
@@ -259,7 +257,6 @@ public class  HomeFragment extends Fragment implements IHome {
         }
 
         return slideList;
-
     }
 
     private  void  autoSlideImage(){
@@ -292,182 +289,6 @@ public class  HomeFragment extends Fragment implements IHome {
     }
 
 
-    //neu activity k tồn tại thì cancel
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        if(timer != null)
-            timer.cancel();
-        timer = null;
-    }
 
-    //lấy dl category
-    class GetCategory extends AsyncTask<Void, Void, String>{
-
-        ArrayList<Category> category2 = new ArrayList<>();
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected String doInBackground(Void... voids) {
-            String result ="";
-
-            try {
-                URL url = new URL(linkCategory);
-                URLConnection connection = url.openConnection();
-                InputStream is = connection.getInputStream();
-
-                int byteCharacter;
-                while ((byteCharacter = is.read()) != -1){
-                    result += (char) byteCharacter;
-                }
-
-
-            } catch (MalformedURLException e) { //Đổi MalformedURLException thành Exception
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            return result;
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            super.onPostExecute(s);
-            category2 = getJSONCategoryArray(s);
-
-//            for (int i = 0; i < category2.size(); i++) {
-                categoryAdapter = new CategoryAdapter(context,category2);
-
-                // below line is to set layout manager for our recycler view.
-                LinearLayoutManager manager = new LinearLayoutManager(context,RecyclerView.VERTICAL,false);
-
-                // setting layout manager for our recycler view.
-                binding.crvCategory.setLayoutManager(manager);
-
-                // below line is to set adapter to our recycler view.
-                binding.crvCategory.setAdapter(categoryAdapter);
-//            }
-        }
-    }
-
-    public ArrayList<Category> getJSONCategoryArray(String s){
-
-        categoryList = new ArrayList<>();
-        try {
-            JSONArray jsonArray = new JSONArray(s);
-            for(int i =0; i< jsonArray.length(); i++){
-                JSONObject jsonObject = jsonArray.getJSONObject(i);
-
-                String id_category = jsonObject.getString("id_category");
-                String name_category = jsonObject.getString("name_category");
-
-                category = new Category(id_category,name_category);
-                categoryList.add(category);
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        return categoryList;
-
-    }
-
-    String linkBook = "http://demo8468432.mockable.io/GetBook";
-    ArrayList<Book> bookList = new ArrayList<>();
-    BookAdapter bookAdapter;
-    Book book;
-    //lấy dl book
-    class GetBook extends AsyncTask<Void, Void, String>{
-
-        ArrayList<Book> book2 = new ArrayList<>();
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected String doInBackground(Void... voids) {
-            String result ="";
-
-            try {
-                URL url = new URL(linkBook);
-                URLConnection connection = url.openConnection();
-                InputStream is = connection.getInputStream();
-
-                int byteCharacter;
-                while ((byteCharacter = is.read()) != -1){
-                    result += (char) byteCharacter;
-                }
-
-
-            } catch (MalformedURLException e) { //Đổi MalformedURLException thành Exception
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            return result;
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            super.onPostExecute(s);
-            book2 = getJSONBookArray(s);
-
-            for (int i = 0; i < book2.size(); i++) {
-                bookAdapter = new BookAdapter(context,book2);
-
-//                LinearLayoutManager manager = new LinearLayoutManager(context,RecyclerView.HORIZONTAL,false);
-//                binding..setLayoutManager(manager);
-//
-//                bookAdapter.setDataBook(book2);
-//                // below line is to set layout manager for our recycler view.
-//                LinearLayoutManager manager = new LinearLayoutManager(context);
-//
-//                // setting layout manager for our recycler view.
-//                binding.crvCategory.setLayoutManager(manager);
-//
-//                // below line is to set adapter to our recycler view.
-//                binding.crvCategory.setAdapter(categoryAdapter);
-            }
-        }
-    }
-
-    public ArrayList<Book> getJSONBookArray(String s){
-
-        bookList = new ArrayList<>();
-        try {
-            JSONArray jsonArray = new JSONArray(s);
-            for(int i =0; i< jsonArray.length(); i++){
-                JSONObject jsonObject = jsonArray.getJSONObject(i);
-
-                String id_book = jsonObject.getString("id_book");
-                String name_book = jsonObject.getString("name_book");
-                String price_book = jsonObject.getString("price_book");
-                String author_book = jsonObject.getString("author_book");
-                String publishing_book = jsonObject.getString("publishing_book");
-                String page_number_book = jsonObject.getString("page_number_book");
-                String size_book = jsonObject.getString("size_book");
-                String date_book = jsonObject.getString("date_book");
-                String describe_book = jsonObject.getString("describe_book");
-                String amount_book = jsonObject.getString("amount_book");
-                String image_book = jsonObject.getString("image_book");
-                String id_category = jsonObject.getString("id_category");
-
-                book = new Book(id_book,name_book,price_book,author_book,publishing_book,
-                        page_number_book,size_book,date_book,describe_book,amount_book,image_book,id_category);
-                bookList.add(book);
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        return bookList;
-
-    }
 }
 

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+    <style name="toolbartext" parent="TextAppearance.AppCompat.Button">
+        <item name="android:textSize">16dp</item>
+    </style>
+
+    <style name="Bookshop.Toolbar" parent="Widget.AppCompat.Toolbar">
+        <item name="android:background">@color/white</item>
+        <item name="theme">@style/AppTheme</item>
+        <item name="popupTheme">@style/Theme.AppCompat.Light</item>
+        <item name="titleTextAppearance">@style/toolbartext</item>
+    </style>
+</resources>

@@ -1,11 +1,9 @@
 package com.minhthanh.bookshop.adapter;
 
 import android.content.Context;
-import android.os.AsyncTask;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -15,20 +13,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.minhthanh.bookshop.R;
 import com.minhthanh.bookshop.api.GetBookApi;
-import com.minhthanh.bookshop.databinding.HomeItemBookBinding;
-import com.minhthanh.bookshop.databinding.HomeItemCategoryBinding;
+import com.minhthanh.bookshop.event.IonItemClickBook_home;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
 import java.util.ArrayList;
-import java.util.List;
 
 import model.Book;
 import model.Category;
@@ -46,17 +33,16 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
 
     BookAdapter bookAdapter;
     private ArrayList<Book> bookList;
+    IonItemClickBook_home ionItemClickBook_home;
 
-    HomeItemCategoryBinding binding;
-
-
-
+    public void setIonItemClickBook_home(IonItemClickBook_home ionItemClickBook_home){
+        this.ionItemClickBook_home = ionItemClickBook_home;
+    }
 
     public CategoryAdapter(Context context, ArrayList<Category> categoryList) {
         this.context = context;
         this.categoryList = categoryList;
 
-//        getBookList();
     }
 
 
@@ -68,19 +54,24 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
         View view = layoutInflater.inflate(R.layout.home_item_category,parent,false);
         CategoryViewHolder categoryViewHolder = new CategoryViewHolder(view);
 
-
         return categoryViewHolder;
     }
 
-    String linkBook = "http://demo8468432.mockable.io/GetBook";
+
+    //linkBook = "http://demo8468432.mockable.io/GetBook";
     @Override
     public void onBindViewHolder(@NonNull CategoryViewHolder holder, int position) {
 
-        // Set the data to textview from our modal class.
-        Category  category = categoryList.get(position);
-
+        Category category = categoryList.get(position);
         holder.tvNameCategory.setText(category.getName_category());
+//        holder.tvNameCategory.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                ionItemClickBook_home.onNamCat(category.getName_category());
+//            }
+//        });
 
+        //book list
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://demo8468432.mockable.io/")
                 .addConverterFactory(GsonConverterFactory.create())
@@ -92,8 +83,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
             public void onResponse(Call<ArrayList<Book>> call, Response<ArrayList<Book>> response) {
                 if (response.isSuccessful()) {
                     bookList = response.body();
-                    for (int i = 0; i < bookList.size(); i++) {
-                        bookAdapter = new BookAdapter(context, bookList);
+                    for (int i = 0; i < bookList.size(); i++) { bookAdapter = new BookAdapter(context, bookList);
                         // below line is to set layout manager for our recycler view.
                         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context, RecyclerView.HORIZONTAL, false);
                         // setting layout manager for our recycler view.
@@ -109,10 +99,6 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
                 Toast.makeText(context, "Fail to get data", Toast.LENGTH_SHORT).show();
             }
         });
-
-
-
-
     }
 
 
@@ -124,7 +110,6 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
 
     // View Holder Class to handle Recycler View.
     public class CategoryViewHolder extends RecyclerView.ViewHolder{
-
         // creating variables for our views.
         private TextView tvNameCategory;
         private RecyclerView rcvBook;
@@ -137,6 +122,6 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
         }
     }
 
-    
+
 
 }
